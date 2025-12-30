@@ -1,0 +1,8 @@
+aiohttp
+pandas
+requests
+nest_asyncio
+google-cloud-bigquery
+google-auth
+pytz
+pyarrow
