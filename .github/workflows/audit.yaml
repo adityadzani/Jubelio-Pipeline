@@ -1,0 +1,28 @@
+name: Daily Inventory Audit Schedule
+
+on:
+  schedule:
+    # Runs at 08:00 UTC (15:00 WIB) Monday through Saturday
+    - cron: '0 8 * * 1-6'
+  workflow_dispatch: # Allows you to run it manually from GitHub UI
+
+jobs:
+  run-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas gspread google-cloud-bigquery pytz db-dtypes
+
+      - name: Execute script
+        env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON  }}
+        run: python audit_script.py
