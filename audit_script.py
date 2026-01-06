@@ -97,7 +97,7 @@ def run_audit_flow():
     )
     
     # Optional: Log sync time in cell F1
-    audit_sheet.update(range_name='F1', values=[[f"Last Sync: {now_jakarta.strftime("%Y-%m-%d %H:%M:%S")}"]])
+    audit_sheet.update(range_name='G1', values=[[f"Last Sync: {now_jakarta.strftime("%Y-%m-%d %H:%M:%S")}"]])
     print(f"✅ Successfully updated Audit tab with {len(final_list)} items.")
 
 if __name__ == "__main__":
