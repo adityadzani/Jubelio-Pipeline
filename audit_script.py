@@ -38,12 +38,12 @@ def get_audit_inventory():
       item_name,
       item_code,
       stock_available,
+      variant,
       DATETIME(updated_at, 'Asia/Jakarta') as stock_updated_at,
       sell_price
     FROM `the-daily-481107.the_daily.inventory`
     WHERE
-      stock_available > 0
-      AND DATE(updated_at, 'Asia/Jakarta') = CURRENT_DATE('Asia/Jakarta')
+      DATE(updated_at, 'Asia/Jakarta') = CURRENT_DATE('Asia/Jakarta')
       AND EXTRACT(HOUR FROM DATETIME(updated_at, 'Asia/Jakarta')) = 14
     ORDER BY sell_price DESC
     """
@@ -85,11 +85,11 @@ def run_audit_flow():
         return
 
     # 4. Write to "Audit" Tab
-    final_list = to_audit[['item_name', 'item_code', 'stock_available', 'stock_updated_at']]
+    final_list = to_audit[['item_name', 'item_code', 'variant','stock_available', 'stock_updated_at']]
     final_list['stock_updated_at'] = final_list['stock_updated_at'].astype(str)
 
     audit_sheet = sh.worksheet("Audit")
-    audit_sheet.batch_clear(["A2:D31"])
+    audit_sheet.batch_clear(["A2:E31"])
     audit_sheet.update(
         range_name='A2', 
         values=final_list.values.tolist(), 
@@ -97,7 +97,7 @@ def run_audit_flow():
     )
     
     # Optional: Log sync time in cell F1
-    audit_sheet.update(range_name='F1', values=[[f"Last Sync: {now_jakarta.strftime('%H:%M:%S')}"]])
+    audit_sheet.update(range_name='F1', values=[[f"Last Sync: {now_jakarta.strftime("%Y-%m-%d %H:%M:%S")}"]])
     print(f"✅ Successfully updated Audit tab with {len(final_list)} items.")
 
 if __name__ == "__main__":
