@@ -85,7 +85,7 @@ def run_audit_flow():
         return
 
     # 4. Write to "Audit" Tab
-    final_list = to_audit[['item_name', 'item_code', 'variant','stock_available', 'stock_updated_at']]
+    final_list = to_audit[['item_code', 'item_name', 'variant','stock_available', 'stock_updated_at']]
     final_list['stock_updated_at'] = final_list['stock_updated_at'].astype(str)
 
     audit_sheet = sh.worksheet("Audit")
