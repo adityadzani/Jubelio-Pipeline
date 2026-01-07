@@ -45,6 +45,7 @@ def get_audit_inventory():
     WHERE
       DATE(updated_at, 'Asia/Jakarta') = CURRENT_DATE('Asia/Jakarta')
       AND EXTRACT(HOUR FROM DATETIME(updated_at, 'Asia/Jakarta')) = 14
+      AND LEFT(item_code, 2) NOT IN ('SA', 'BR')
     ORDER BY sell_price DESC
     """
     return bq_client.query(query).to_dataframe(create_bqstorage_client=False)
